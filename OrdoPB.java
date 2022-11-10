@@ -94,8 +94,14 @@ public class OrdoPB {
                     // Some engines can only execute specific tasks
                     int orderIndex = j/2;
                     if (2*orderIndex == j ){  // if the task is phase one (index is even)
-                        if ( (i!=0) && (i !=4) ) {
-                            model.arithm(ex[i][j], "=", 0).post();// only the engine #0 can execute this task (or engine #4 if q6 = true)
+                        if (q6 == true) {
+                            if ((i != 0) && (i != 4)) {
+                                model.arithm(ex[i][j], "=", 0).post();// only the engine #0 or #4 can execute this task
+                            }
+                        } else if (i==0){
+                            model.arithm(ex[i][j], "=", 1).post();// the engine #0 must execute this task
+                        } else {
+                            model.arithm(ex[i][j], "=", 0).post();// the other engines can't do it
                         }
                     } else {    // if the task is phase two (index is odd)
                         int productType = orderList[orderIndex][0]; // type of product for order orderIndex
